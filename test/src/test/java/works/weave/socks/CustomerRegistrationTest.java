@@ -19,14 +19,15 @@ public class CustomerRegistrationTest {
     private SocksShop socksShop;
 
     @Test
-    public void testCreateNewUser() {
+    public void testCreateNewUserThenDeleteIt() {
         socksShop.frontEnd()
                 .register("testcustomer", "pwd", "Test", "Customer")
                 .login("testcustomer", "pwd")
-                .verifyLoggedInCustomer(c -> {
+                .verifyCustomer("testcustomer", c -> {
                     assertThat(c.getFirstName(), is("Test"));
                     assertThat(c.getLastName(), is("Customer"));
                 })
+                .deleteUser("testcustomer")
                 .endFrontEnd();
     }
 }

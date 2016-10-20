@@ -43,10 +43,15 @@ public class FrontEnd {
         return this;
     }
 
-    public FrontEnd verifyLoggedInCustomer(VerifyObject<Customer> verifyObject) {
-        Awaitility.await("verifying logged in customer").atMost(1, TimeUnit.MINUTES).until(Waiter.wait(() -> {
-            Customer customer = Unirest.get(url + "/customers/" + state.getLoggedInUserId()).asObject(Customer.class).getBody();
-            verifyObject.verify(customer);
+    public FrontEnd verifyCustomer(String username, VerifyObject<Customer> verifyObject) {
+        Awaitility.await("verifying customer '" + username + "'").atMost(1, TimeUnit.MINUTES).until(Waiter.wait(() -> {
+            if (username.equals(state.getLoggedInUsername())) {
+                Customer customer = Unirest.get(url + "/customers/" + state.getLoggedInUserId()).asObject(Customer.class).getBody();
+                verifyObject.verify(customer);
+            } else {
+                throw new IllegalStateException("Only verification of logged in user is supported");
+                //TODO implement lookup of user id from username
+            }
         }));
         return this;
     }
@@ -75,4 +80,21 @@ public class FrontEnd {
         return this;
     }
 
+    public FrontEnd deleteUser(String username) {
+        Awaitility.await("verifying customer '" + username + "'").atMost(1, TimeUnit.MINUTES).until(Waiter.wait(() -> {
+            if (username.equals(state.getLoggedInUsername())) {
+                HttpResponse<String> response = Unirest.delete(url + "/customers/" + state.getLoggedInUserId()).asString();
+                if (response.getStatus() != HttpStatus.SC_OK || response.getBody().contains("error")) {
+                    throw new AssertionError("Deleting user '" + username + "' not successful. Received status " +
+                            response.getStatus() + ", body '" + response.getBody() + "'");
+                } else {
+                    log.info("User {} deleted", username);
+                }
+            } else {
+                throw new IllegalStateException("Only deleting of logged in user is supported");
+                //TODO implement lookup of user id from username
+            }
+        }));
+        return this;
+    }
 }

@@ -76,7 +76,7 @@ public class SocksShopTestConfig {
             log.info("Creating namespace 'socks' and starting application");
             client.namespaces().createNew().withNewMetadata().withName(ns).endMetadata().done();
 
-            String completeDemoYml = FileUtils.readFileToString(new File("/Users/asandor/Projects/cs/socksshop/microservices-demo/deploy/kubernetes/complete-demo.yaml"), "UTF-8");
+            String completeDemoYml = FileUtils.readFileToString(new File("../deploy/kubernetes/complete-demo.yaml"), "UTF-8");
             String[] components = completeDemoYml.split("---");
 
             log.info("Starting application");
