@@ -3,7 +3,6 @@ package works.weave.socks;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import io.fabric8.kubernetes.api.model.EndpointSubset;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.client.Config;
@@ -21,6 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PreDestroy;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -81,7 +81,7 @@ public class SocksShopTestConfig {
 
             log.info("Starting application");
             for (String component : components) {
-                client.load(new ByteInputStream(component.getBytes("UTF-8"), component.length()))
+                client.load(new ByteArrayInputStream(component.getBytes("UTF-8")))
                         .inNamespace(ns)
                         .apply();
             }
