@@ -79,10 +79,14 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void orderContentWithoutLogin_shouldFail() {
+    public void orderContentWithoutLogin_shouldNotAddOrders() {
         socksShop.frontEnd().
                 addItemToShoppingCart(SOCK_COLOURFUL_ID).
                 orderCartContent().
+                verifyOrders(orders -> {
+                            assertThat(orders.length, is(0));
+                        }
+                ).
                 endFrontEnd();
     }
 
