@@ -96,7 +96,7 @@ public class FrontEnd {
     }
 
     public FrontEnd deleteUser(String username) {
-        Awaitility.await("verifying customer '" + username + "'").atMost(1, TimeUnit.MINUTES).until(Waiter.wait(() -> {
+        Awaitility.await("Deleting user '" + username + "'").atMost(1, TimeUnit.MINUTES).until(Waiter.wait(() -> {
             if (username.equals(state.getLoggedInUsername())) {
                 HttpResponse<String> response = Unirest.delete(url + ENDPOINT_CUSTOMER + "/" + state.getLoggedInUserId()).asString();
                 if (response.getStatus() != HttpStatus.SC_OK || response.getBody().contains(ERROR_KEY)) {
