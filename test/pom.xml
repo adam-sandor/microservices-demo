@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>io.fabric8</groupId>
 			<artifactId>kubernetes-client</artifactId>
-			<version>1.4.14</version>
+			<version>1.4.20</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

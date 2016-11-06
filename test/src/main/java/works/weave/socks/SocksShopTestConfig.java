@@ -16,6 +16,7 @@ import org.awaitility.Awaitility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -63,9 +64,12 @@ public class SocksShopTestConfig {
 
     private boolean stopApplication = true;
 
+    @Value("${socks.kubernetes.masterUrl}")
+    private String masterUrl;
+
     @Bean
     public KubernetesClient kubernetesClient() {
-        Config config = new ConfigBuilder().withMasterUrl("https://192.168.99.100:8443").build();
+        Config config = new ConfigBuilder().withMasterUrl(masterUrl).build();
         return new DefaultKubernetesClient(config);
     }
 
@@ -83,7 +87,7 @@ public class SocksShopTestConfig {
             for (String component : components) {
                 client.load(new ByteArrayInputStream(component.getBytes("UTF-8")))
                         .inNamespace(ns)
-                        .apply();
+                        .createOrReplace();
             }
 
             log.info("Waiting for services endpoints to become available");
