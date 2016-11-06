@@ -18,7 +18,7 @@ public class FrontEnd {
     public static final String ERROR_KEY = "error";
 
     public static final String ENDPOINT_CART = "/cart";
-    public static final String ENDPOINT_CUSTOMER = "/customer";
+    public static final String ENDPOINT_CUSTOMER = "/customers";
     public static final String ENDPOINT_ORDERS = "/orders";
     public static final String ENDPOINT_REGISTER = "/register";
     public static final String ENDPOINT_LOGIN = "/login";
